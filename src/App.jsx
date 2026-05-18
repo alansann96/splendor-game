@@ -59,10 +59,24 @@ export default function App() {
   return <Lobby onStartSolo={startSolo} onCreate={handleCreate} onJoin={handleJoin} />;
 }
 
+function OnlineHeaderChips({ code, onLeave }) {
+  const mob = typeof window !== 'undefined' && window.innerWidth < 760;
+  return (
+    <div style={{ position: 'fixed', top: 6, [mob?'left':'right']: mob?40:200, display: 'flex', gap: 6, zIndex: 10 }}>
+      <span style={{ background: '#07050dcc', border: '1px solid #ffffff12', color: '#f0c840bb', fontSize: 8, padding: '3px 8px', letterSpacing: 2, fontFamily: 'Georgia,serif', borderRadius: 4 }}>ROOM {code}</span>
+      <button onClick={onLeave}
+        style={{ background: '#07050dcc', border: '1px solid #ffffff12', color: '#ffffff66', fontSize: 8, cursor: 'pointer', borderRadius: 4, padding: '3px 8px', letterSpacing: 1, fontFamily: 'Georgia,serif' }}>
+        ← LOBBY
+      </button>
+    </div>
+  );
+}
+
 function LobbyBackBtn({ onClick }) {
+  const mob = typeof window !== 'undefined' && window.innerWidth < 760;
   return (
     <button onClick={onClick}
-      style={{ position: 'fixed', top: 6, right: 200, background: 'transparent', border: '1px solid #ffffff12', color: '#ffffff28', fontSize: 8, cursor: 'pointer', borderRadius: 4, padding: '3px 8px', letterSpacing: 1, fontFamily: 'Georgia,serif', zIndex: 10 }}>
+      style={{ position: 'fixed', top: 6, [mob?'left':'right']: mob?40:200, background: '#07050dcc', border: '1px solid #ffffff12', color: '#ffffff66', fontSize: 8, cursor: 'pointer', borderRadius: 4, padding: '3px 8px', letterSpacing: 1, fontFamily: 'Georgia,serif', zIndex: 10 }}>
       ← LOBBY
     </button>
   );
@@ -86,7 +100,7 @@ function Lobby({ onStartSolo, onCreate, onJoin }) {
   return (
     <div style={shellStyle}>
       <style>{`@keyframes sh{0%,100%{opacity:0.55}50%{opacity:1}}`}</style>
-      <div style={{ width: 460, display: 'flex', flexDirection: 'column', gap: 18 }}>
+      <div style={{ width: '100%', maxWidth: 460, display: 'flex', flexDirection: 'column', gap: 18 }}>
         <Title />
 
         {!mode && (
@@ -200,7 +214,7 @@ function WaitingRoom({ code, myIdx, isHost, onStart, onLeave }) {
   return (
     <div style={shellStyle}>
       <style>{`@keyframes sh{0%,100%{opacity:0.55}50%{opacity:1}} @keyframes pu{0%,100%{opacity:0.45}50%{opacity:1}}`}</style>
-      <div style={{ width: 520, display: 'flex', flexDirection: 'column', gap: 18 }}>
+      <div style={{ width: '100%', maxWidth: 520, display: 'flex', flexDirection: 'column', gap: 18 }}>
         <Title />
 
         <div style={{ background: '#0b0918', borderRadius: 10, padding: '16px 20px', border: '1px solid #ffffff14', textAlign: 'center' }}>
@@ -285,13 +299,7 @@ function OnlineGame({ code, myIdx, isHost, onLeave }) {
   return (
     <div style={{ position: 'relative' }}>
       <Splendor key={code} syncedGame={syncedGame} onPublishGame={onPublishGame} isHost={isHost} myPlayerIndex={myIdx} initialSlots={cleanSlots} />
-      <div style={{ position: 'fixed', top: 6, right: 200, display: 'flex', gap: 6, zIndex: 10 }}>
-        <span style={{ background: 'transparent', border: '1px solid #ffffff12', color: '#f0c84088', fontSize: 8, padding: '3px 8px', letterSpacing: 2, fontFamily: 'Georgia,serif', borderRadius: 4 }}>ROOM {code}</span>
-        <button onClick={onLeave}
-          style={{ background: 'transparent', border: '1px solid #ffffff12', color: '#ffffff28', fontSize: 8, cursor: 'pointer', borderRadius: 4, padding: '3px 8px', letterSpacing: 1, fontFamily: 'Georgia,serif' }}>
-          ← LOBBY
-        </button>
-      </div>
+      <OnlineHeaderChips code={code} onLeave={onLeave} />
     </div>
   );
 }

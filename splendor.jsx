@@ -160,6 +160,17 @@ const aiDecide = (g, pi) => {
   return aiDecideMedium(g, pi);
 };
 
+function useIsMobile(threshold = 760) {
+  const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < threshold);
+  useEffect(() => {
+    const on = () => setM(window.innerWidth < threshold);
+    window.addEventListener('resize', on);
+    on();
+    return () => window.removeEventListener('resize', on);
+  }, [threshold]);
+  return m;
+}
+
 function useSound() {
   const ctxRef = useRef(null);
   const mutedRef = useRef(false);
@@ -299,7 +310,9 @@ const CardArt = ({ col, w, h }) => {
 };
 
 const CardTile = ({ card, onClick, canBuy, mode, small, flash }) => {
-  const w=small?62:88, h=small?78:112, artH=small?34:54;
+  const mob = useIsMobile();
+  const cmp = small || mob;
+  const w=cmp?62:88, h=cmp?78:112, artH=cmp?34:54;
   if (!card) return <div style={{width:w,height:h,borderRadius:8,background:'#ffffff04',border:'1px dashed #ffffff0e',flexShrink:0}}/>;
   const bc = mode==='reserve' ? '#c858e0' : canBuy ? GC[card.b] : '#ffffff18';
   const bw = canBuy&&!mode ? 2 : 1.5;
@@ -375,6 +388,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
     if (game.gameOver && phase !== 'over') setPhase('over');
   }, [game.gameOver]);
 
+  const mob = useIsMobile();
   const me = game.players[myPlayerIndex];
   const cur = game.players[game.turn];
   const isMyTurn = phase==='acting' && game.turn === myPlayerIndex && cur && cur.kind === 'human';
@@ -550,23 +564,26 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
       <style>{`@keyframes sh{0%,100%{opacity:0.55}50%{opacity:1}} @keyframes pu{0%,100%{opacity:0.35}50%{opacity:1}} @keyframes pi{0%{transform:scale(0.85);opacity:0}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}`}</style>
 
       {/* Header */}
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'7px 14px',borderBottom:'1px solid #ffffff0c',background:'linear-gradient(90deg,#07050d,#0d0718,#07050d)',flexShrink:0}}>
-        <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <span style={{color:'#f0c840',fontSize:22,animation:'sh 3s ease-in-out infinite'}}>✦</span>
-          <div>
-            <div style={{color:'#f0c840',fontSize:14,letterSpacing:5,lineHeight:1}}>SPLENDOR</div>
-            <div style={{color:'#f0c84033',fontSize:7,letterSpacing:3}}>RENAISSANCE</div>
-          </div>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:mob?'5px 8px':'7px 14px',borderBottom:'1px solid #ffffff0c',background:'linear-gradient(90deg,#07050d,#0d0718,#07050d)',flexShrink:0,gap:mob?6:12}}>
+        <div style={{display:'flex',alignItems:'center',gap:mob?5:8,flexShrink:0}}>
+          <span style={{color:'#f0c840',fontSize:mob?16:22,animation:'sh 3s ease-in-out infinite'}}>✦</span>
+          {!mob && (
+            <div>
+              <div style={{color:'#f0c840',fontSize:14,letterSpacing:5,lineHeight:1}}>SPLENDOR</div>
+              <div style={{color:'#f0c84033',fontSize:7,letterSpacing:3}}>RENAISSANCE</div>
+            </div>
+          )}
         </div>
-        <div style={{display:'flex',gap:12,alignItems:'center'}}>
+        <div style={{display:'flex',gap:mob?4:12,alignItems:'center',flex:1,justifyContent:'center',overflowX:'auto',minWidth:0}}>
           {game.players.map((p,i)=>{
             const active = i === game.turn && phase !== 'over';
             const pct = Math.min(100, (p.points/15)*100);
+            const sz = mob?24:30;
             return (
-              <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'3px 10px',borderRadius:20,background:active?'#f0c84014':'transparent',border:`1px solid ${active?'#f0c84044':'transparent'}`,transition:'all 0.4s'}}>
+              <div key={i} style={{display:'flex',alignItems:'center',gap:mob?3:7,padding:mob?'2px 5px':'3px 10px',borderRadius:20,background:active?'#f0c84014':'transparent',border:`1px solid ${active?'#f0c84044':'transparent'}`,transition:'all 0.4s',flexShrink:0}}>
                 {active && <span style={{color:'#f0c840',fontSize:7,animation:'pu 1s infinite'}}>▶</span>}
-                <span style={{color:active?'#e0c080':'#444',fontSize:10,letterSpacing:1}}>{p.name.toUpperCase()}</span>
-                <svg width="30" height="30" viewBox="0 0 30 30">
+                {!mob && <span style={{color:active?'#e0c080':'#444',fontSize:10,letterSpacing:1}}>{p.name.toUpperCase()}</span>}
+                <svg width={sz} height={sz} viewBox="0 0 30 30">
                   <circle cx="15" cy="15" r="11" fill="none" stroke="#ffffff0c" strokeWidth="2.5"/>
                   <circle cx="15" cy="15" r="11" fill="none" stroke={active?'#f0c840':'#333'} strokeWidth="2.5"
                     strokeDasharray={`${2*Math.PI*11}`}
@@ -578,17 +595,17 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
               </div>
             );
           })}
-          {game.finalRound && <span style={{color:'#f06060',fontSize:8,letterSpacing:2,animation:'pu 0.8s infinite'}}>FINAL ROUND</span>}
+          {game.finalRound && <span style={{color:'#f06060',fontSize:8,letterSpacing:2,animation:'pu 0.8s infinite',flexShrink:0}}>{mob?'FINAL':'FINAL ROUND'}</span>}
         </div>
-        <div style={{display:'flex',gap:6,alignItems:'center'}}>
-          <button onClick={toggleMute} style={{border:'1px solid #ffffff12',background:'transparent',color:muteState?'#333':'#ffffff44',fontSize:13,cursor:'pointer',borderRadius:4,padding:'2px 8px'}}>{muteState?'🔇':'🔊'}</button>
-          <button onClick={restart} style={{border:'1px solid #ffffff12',background:'transparent',color:'#ffffff28',fontSize:8,cursor:'pointer',borderRadius:4,padding:'3px 8px',letterSpacing:1,fontFamily:'Georgia,serif'}}>NEW GAME</button>
+        <div style={{display:'flex',gap:mob?4:6,alignItems:'center',flexShrink:0}}>
+          <button onClick={toggleMute} style={{border:'1px solid #ffffff12',background:'transparent',color:muteState?'#333':'#ffffff44',fontSize:mob?11:13,cursor:'pointer',borderRadius:4,padding:'2px 6px'}}>{muteState?'🔇':'🔊'}</button>
+          {!mob && <button onClick={restart} style={{border:'1px solid #ffffff12',background:'transparent',color:'#ffffff28',fontSize:8,cursor:'pointer',borderRadius:4,padding:'3px 8px',letterSpacing:1,fontFamily:'Georgia,serif'}}>NEW GAME</button>}
         </div>
       </div>
 
-      <div style={{display:'flex',flex:1,overflow:'hidden'}}>
+      <div style={{display:'flex',flexDirection:mob?'column':'row',flex:1,overflow:'hidden',overflowY:mob?'auto':'hidden'}}>
         {/* BOARD */}
-        <div style={{flex:1,padding:'10px 12px',overflowY:'auto',minWidth:0,display:'flex',flexDirection:'column',gap:8}}>
+        <div style={{flex:mob?'none':1,padding:mob?'6px 8px':'10px 12px',overflowY:mob?'visible':'auto',minWidth:0,display:'flex',flexDirection:'column',gap:8}}>
           {/* Nobles */}
           <div style={{display:'flex',gap:6,alignItems:'center'}}>
             <div style={{width:36,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
@@ -600,9 +617,9 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
 
           {/* Tiers */}
           {[3,2,1].map(tier=>(
-            <div key={tier} style={{display:'flex',gap:6,alignItems:'center'}}>
+            <div key={tier} style={{display:'flex',gap:mob?4:6,alignItems:'center',overflowX:mob?'auto':'visible',paddingBottom:mob?2:0}}>
               <div onClick={()=>{if(mode==='reserve'&&game.deck[tier].length>0)reserveCard(null,true,tier);}}
-                style={{width:36,minWidth:36,height:112,borderRadius:8,flexShrink:0,cursor:mode==='reserve'&&game.deck[tier].length>0?'pointer':'default',
+                style={{width:mob?28:36,minWidth:mob?28:36,height:mob?78:112,borderRadius:8,flexShrink:0,cursor:mode==='reserve'&&game.deck[tier].length>0?'pointer':'default',
                   background:`linear-gradient(160deg,${tierC[tier]}12,#06040e)`,
                   border:`1.5px solid ${mode==='reserve'&&game.deck[tier].length>0?tierC[tier]+'cc':tierC[tier]+'28'}`,
                   boxShadow:mode==='reserve'&&game.deck[tier].length>0?`0 0 14px ${tierC[tier]}55`:'none',
@@ -625,7 +642,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
           <div style={{height:1,background:'linear-gradient(90deg,transparent,#ffffff08,transparent)'}}/>
 
           {/* Bank */}
-          <div style={{padding:'10px 12px',background:'linear-gradient(145deg,#0a0818,#070612)',borderRadius:10,border:'1px solid #ffffff0c'}}>
+          <div style={{padding:mob?'8px':'10px 12px',background:'linear-gradient(145deg,#0a0818,#070612)',borderRadius:10,border:'1px solid #ffffff0c'}}>
             <div style={{fontSize:8,color:'#ffffff22',letterSpacing:2,marginBottom:10}}>{mode==='gems'?'SELECT GEMS — UP TO 3 DIFFERENT, OR 2 SAME (NEED 4+)':'GEM BANK'}</div>
             <div style={{display:'flex',gap:10,alignItems:'flex-end',flexWrap:'wrap'}}>
               {GEMS.map(col=>{
@@ -665,12 +682,12 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
         </div>
 
         {/* RIGHT PANEL */}
-        <div style={{width:215,background:'linear-gradient(180deg,#06050c,#07060e)',borderLeft:'1px solid #ffffff08',padding:'8px 10px',display:'flex',flexDirection:'column',gap:7,overflowY:'auto',flexShrink:0}}>
+        <div style={{width:mob?'100%':215,background:'linear-gradient(180deg,#06050c,#07060e)',[mob?'borderTop':'borderLeft']:'1px solid #ffffff08',padding:mob?'6px 8px':'8px 10px',display:'flex',flexDirection:'column',gap:7,overflowY:mob?'visible':'auto',flexShrink:0}}>
           {game.players.map((p,i)=>{
             const active = i === game.turn && phase !== 'over';
             const bonuses = GEMS.reduce((a,c)=>({...a,[c]:getBonus(p,c)}),{});
             return (
-              <div key={i} style={{borderRadius:8,padding:'8px 10px',background:active?'#13102a':'#0b0918',border:`1px solid ${active?'#f0c84044':'#ffffff08'}`,transition:'all 0.4s',boxShadow:active?'0 0 18px #f0c84010':'none'}}>
+              <div key={i} style={{borderRadius:8,padding:mob?'5px 8px':'8px 10px',background:active?'#13102a':'#0b0918',border:`1px solid ${active?'#f0c84044':'#ffffff08'}`,transition:'all 0.4s',boxShadow:active?'0 0 18px #f0c84010':'none'}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}}>
                   <div>
                     <div style={{color:active?'#c0a860':'#333',fontSize:8,letterSpacing:2}}>{p.name.toUpperCase()}{i===myPlayerIndex?' (YOU)':p.kind==='ai'?' (AI)':''}</div>
