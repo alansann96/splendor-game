@@ -4,46 +4,46 @@ const STORAGE_KEY = 'arcane.onboardingSeen';
 
 const STEPS = [
   {
-    eyebrow: 'Chapter I',
-    title: 'The Hall of Arcanum',
+    eyebrow: 'Welcome',
+    title: 'Hi! Let\'s Play!',
     icon: '✦',
     visual: 'sigil',
-    body: 'You stand at the doorway of the alchemists\' guild. To claim your seat among the masters, you must learn the essences and earn fifteen marks of prestige.',
+    body: 'Try to be the first player to get 15 points and win. Let\'s learn how it works — it\'s easy!',
   },
   {
-    eyebrow: 'Chapter II · Your Turn',
-    title: 'Gather the Essences',
+    eyebrow: 'Your Turn · Step 1',
+    title: 'Pick Up Essences',
     icon: '◆',
     visual: 'gems',
-    body: 'Each turn, take three different essences from the bank — or two of the same color if four or more remain. Hold no more than ten at a time.',
+    body: 'Essences are colorful gems. On your turn, pick 3 essences in different colors. Or pick 2 of the same color if there are 4 or more left. Don\'t hold more than 10 in total.',
   },
   {
-    eyebrow: 'Chapter III · Your Turn',
-    title: 'Craft the Reagents',
+    eyebrow: 'Your Turn · Step 2',
+    title: 'Buy a Reagent',
     icon: '⊟',
     visual: 'reagent',
-    body: 'Spend essences to acquire a reagent. Each one grants a permanent discount on future purchases, and many bear marks of prestige.',
+    body: 'Reagents are magic cards. Trade your essences to buy one. Every reagent you own makes your next buys easier — and some give you points right away!',
   },
   {
-    eyebrow: 'Chapter IV · Your Turn',
-    title: 'Reserve & the Wild Aurum',
+    eyebrow: 'Your Turn · Step 3',
+    title: 'Save One for Later',
     icon: '⊞',
     visual: 'aurum',
-    body: 'Set aside a reagent for later — you receive an aurum, a wild essence that counts as any color. Reserve up to three at once.',
+    body: 'See a reagent you want but can\'t buy yet? Save it! You\'ll also get an aurum — a gold coin that can act as any color. You can save up to 3 reagents.',
   },
   {
-    eyebrow: 'Chapter V',
-    title: 'Earn the Archmages\' Favor',
+    eyebrow: 'Special Bonus',
+    title: 'Meet the Archmages',
     icon: '♛',
     visual: 'archmage',
-    body: 'When your reagents match an archmage\'s tastes, they visit your workshop unbidden — bestowing three prestige each. Their favor is automatic.',
+    body: 'Archmages are wise wizards. If you collect the right reagents, they come visit you and give you 3 free points. You don\'t have to do anything!',
   },
   {
-    eyebrow: 'Chapter VI · Victory',
-    title: 'The Path to Fifteen',
+    eyebrow: 'How to Win',
+    title: 'Get to 15 Points!',
     icon: '⚡',
     visual: 'victory',
-    body: 'First to fifteen prestige triggers the final round. When every player has taken an equal number of turns, the highest score wins. Begin your craft.',
+    body: 'When someone reaches 15 points, everyone takes one more turn. Then whoever has the most points wins. Have fun!',
   },
 ];
 
@@ -248,7 +248,7 @@ export default function Onboarding({ open, onClose }) {
             ← BACK
           </button>
           <button onClick={isLast ? finish : () => goToStep(step + 1)} style={btnPrimary}>
-            {isLast ? 'BEGIN  ✦' : 'NEXT  →'}
+            {isLast ? 'LET\'S PLAY  ✦' : 'NEXT  →'}
           </button>
         </div>
 
@@ -510,7 +510,7 @@ function StepVisual({ kind }) {
             marginTop: 6,
           }}
         >
-          MARKS OF PRESTIGE
+          POINTS TO WIN
         </div>
       </div>
     );

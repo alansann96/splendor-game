@@ -28,8 +28,19 @@ export function useMusic() {
     const evts = ['pointerdown', 'keydown', 'touchstart'];
     evts.forEach((e) => window.addEventListener(e, start, { once: true, passive: true }));
 
+    const onVis = () => {
+      if (!startedRef.current) return;
+      if (document.hidden) {
+        try { a.pause(); } catch { /* noop */ }
+      } else if (!readMuted()) {
+        a.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', onVis);
+
     return () => {
       evts.forEach((e) => window.removeEventListener(e, start));
+      document.removeEventListener('visibilitychange', onVis);
       try { a.pause(); } catch { /* noop */ }
       audioRef.current = null;
     };
