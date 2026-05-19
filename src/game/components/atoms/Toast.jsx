@@ -12,6 +12,7 @@ export default function Toast({ message, tone = 'warn' }) {
         position: 'fixed',
         top: 'calc(64px + env(safe-area-inset-top))',
         left: '50%',
+        transform: 'translateX(-50%)',
         zIndex: 30,
         padding: '10px 16px',
         background: palette.bg,
@@ -25,10 +26,13 @@ export default function Toast({ message, tone = 'warn' }) {
         fontWeight: 600,
         letterSpacing: 0.3,
         boxShadow: '0 10px 28px rgba(0,0,0,0.45), var(--glass-highlight)',
-        animation: 'toast-in var(--dur-base) var(--ease-out)',
+        animation: 'toast-in var(--dur-base) var(--ease-out) both',
         maxWidth: 'calc(100% - 32px)',
         textAlign: 'center',
         pointerEvents: 'none',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
       }}
     >
       {message}

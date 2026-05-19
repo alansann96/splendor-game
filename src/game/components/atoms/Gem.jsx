@@ -15,7 +15,7 @@ export default function Gem({ col, size = 44, count, picked, glow, dimmed }) {
           ? `0 0 ${size * 0.45}px ${GC[col]}99, 0 0 ${size * 0.2}px ${GC[col]}cc, inset 0 -${size * 0.08}px ${size * 0.12}px ${GD[col]}66`
           : `inset 0 -${size * 0.08}px ${size * 0.1}px ${GD[col]}55`,
         border: `${size * 0.04}px solid rgba(255,255,255,0.22)`,
-        transform: picked ? 'scale(1.14)' : 'scale(1)',
+        transform: picked ? 'scale(1.08)' : 'scale(1)',
         opacity: dimmed ? 0.2 : 1,
         transition: 'transform 0.15s, box-shadow 0.2s, opacity 0.2s',
         display: 'flex',

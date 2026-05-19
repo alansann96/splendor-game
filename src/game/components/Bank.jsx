@@ -40,6 +40,8 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPi
           justifyContent: 'space-between',
           overflowX: 'auto',
           scrollbarWidth: 'none',
+          padding: '4px 2px',
+          margin: '-4px -2px',
         }}
       >
         {GEMS.map((col) => {
