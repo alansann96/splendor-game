@@ -24,7 +24,7 @@ const FLASH_CARD_MS = 350;
 const LOG_LIMIT = 14;
 const TOAST_MS = 2500;
 
-export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, onPublishGame, isHost = true, onOpenHelp } = {}) {
+export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, onPublishGame, isHost = true, onOpenHelp, onBackToLobby } = {}) {
   const synced = !!onPublishGame;
   const [slots] = useState(initialSlots && initialSlots.length ? initialSlots : DEFAULT_SLOTS);
   const [gameLocal, setGameLocal] = useState(() => syncedGame || initGame(slots));
@@ -323,6 +323,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
         onToggleMusic={toggleMusic}
         onRestart={restart}
         onOpenHelp={onOpenHelp}
+        onBackToLobby={onBackToLobby}
       />
 
       {/* Scrollable body */}

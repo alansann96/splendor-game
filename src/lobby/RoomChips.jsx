@@ -10,43 +10,21 @@ const chipBase = {
   fontFamily: 'Georgia,serif',
 };
 
-export function OnlineHeaderChips({ code, onLeave }) {
+export function OnlineHeaderChips({ code }) {
   const mob = isMobile();
   return (
     <div
       style={{
         position: 'fixed',
-        top: 6,
-        [mob ? 'left' : 'right']: mob ? 40 : 200,
+        top: mob ? 'calc(6px + env(safe-area-inset-top))' : 6,
+        right: 12,
         display: 'flex',
         gap: 6,
-        zIndex: 10,
+        zIndex: 11,
+        pointerEvents: 'none',
       }}
     >
       <span style={{ ...chipBase, color: '#f0c840bb', letterSpacing: 2 }}>ROOM {code}</span>
-      <button onClick={onLeave} style={{ ...chipBase, color: '#ffffff66', cursor: 'pointer' }}>
-        ← LOBBY
-      </button>
     </div>
-  );
-}
-
-export function LobbyBackBtn({ onClick }) {
-  const mob = isMobile();
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        position: 'fixed',
-        top: 6,
-        [mob ? 'left' : 'right']: mob ? 40 : 200,
-        ...chipBase,
-        color: '#ffffff66',
-        cursor: 'pointer',
-        zIndex: 10,
-      }}
-    >
-      ← LOBBY
-    </button>
   );
 }

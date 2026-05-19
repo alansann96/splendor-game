@@ -49,8 +49,9 @@ export default function OnlineGame({ code, myIdx, isHost, onLeave, onOpenHelp })
         myPlayerIndex={myIdx}
         initialSlots={cleanSlots}
         onOpenHelp={onOpenHelp}
+        onBackToLobby={onLeave}
       />
-      <OnlineHeaderChips code={code} onLeave={onLeave} />
+      <OnlineHeaderChips code={code} />
     </div>
   );
 }

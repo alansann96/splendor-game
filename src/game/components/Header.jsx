@@ -1,4 +1,4 @@
-export default function Header({ game, phase, mob, muteState, onToggleMute, musicMuted, onToggleMusic, onRestart, onOpenHelp }) {
+export default function Header({ game, phase, mob, muteState, onToggleMute, musicMuted, onToggleMusic, onRestart, onOpenHelp, onBackToLobby }) {
   return (
     <div
       style={{
@@ -20,6 +20,30 @@ export default function Header({ game, phase, mob, muteState, onToggleMute, musi
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: mob ? 6 : 10, flexShrink: 0 }}>
+        {onBackToLobby && (
+          <button
+            onClick={onBackToLobby}
+            aria-label="Back to lobby"
+            title="Back to lobby"
+            style={{
+              border: '1px solid var(--glass-border)',
+              background: 'var(--glass-bg)',
+              color: 'var(--text-secondary)',
+              fontFamily: 'var(--font-ui)',
+              fontSize: mob ? 9 : 10,
+              fontWeight: 700,
+              letterSpacing: 1.5,
+              cursor: 'pointer',
+              borderRadius: 'var(--r-sm)',
+              padding: mob ? '5px 8px' : '6px 10px',
+              minHeight: 32,
+              lineHeight: 1,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            ← {mob ? '' : 'LOBBY'}
+          </button>
+        )}
         <span style={{ color: 'var(--accent-gold)', fontSize: mob ? 18 : 24, animation: 'sh 3s ease-in-out infinite', lineHeight: 1 }}>✦</span>
         {!mob && (
           <div>

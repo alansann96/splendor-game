@@ -5,7 +5,6 @@ import Onboarding from './components/Onboarding';
 import Splendor from './game/components/Splendor';
 import Lobby from './lobby/Lobby';
 import OnlineGame from './lobby/OnlineGame';
-import { LobbyBackBtn } from './lobby/RoomChips';
 import WaitingRoom from './lobby/WaitingRoom';
 import { fetchRoom, getClientId, newCode, publishRoom, publishSlots } from './useRoom';
 
@@ -107,8 +106,13 @@ function AppViews() {
   if (view === 'game' && !roomCode) {
     return (
       <div style={{ position: 'relative' }}>
-        <Splendor key={JSON.stringify(slots)} initialSlots={slots} myPlayerIndex={myIdx} onOpenHelp={openHelp} />
-        <LobbyBackBtn onClick={backToLobby} />
+        <Splendor
+          key={JSON.stringify(slots)}
+          initialSlots={slots}
+          myPlayerIndex={myIdx}
+          onOpenHelp={openHelp}
+          onBackToLobby={backToLobby}
+        />
         {onboardingOverlay}
       </div>
     );
@@ -133,7 +137,13 @@ function AppViews() {
   if (view === 'game' && roomCode) {
     return (
       <>
-        <OnlineGame code={roomCode} myIdx={myIdx} isHost={isHost} onLeave={backToLobby} onOpenHelp={openHelp} />
+        <OnlineGame
+          code={roomCode}
+          myIdx={myIdx}
+          isHost={isHost}
+          onLeave={backToLobby}
+          onOpenHelp={openHelp}
+        />
         {onboardingOverlay}
       </>
     );

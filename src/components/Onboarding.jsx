@@ -111,7 +111,7 @@ export default function Onboarding({ open, onClose }) {
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
         padding: 16,
-        animation: 'shimmer 360ms ease-out',
+        animation: 'fade-in 240ms ease-out',
       }}
     >
       <div
