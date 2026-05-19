@@ -119,6 +119,10 @@ button, input { font: inherit; }
 @keyframes pi   { 0% { transform: scale(0.85); opacity: 0 } 60% { transform: scale(1.06) } 100% { transform: scale(1); opacity: 1 } }
 @keyframes gp   { 0%,100% { opacity: 0.8; transform: scale(1) } 50% { opacity: 1; transform: scale(1.05) } }
 @keyframes shimmer { 0%,100% { opacity: 0.45 } 50% { opacity: 1 } }
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, -12px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
 
 /* Reduced motion: kill orb drift + pulses */
 @media (prefers-reduced-motion: reduce) {

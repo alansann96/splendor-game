@@ -15,12 +15,14 @@ import GameOver from './GameOver';
 import Header from './Header';
 import OpponentStrip from './OpponentStrip';
 import PinnedHand from './PinnedHand';
+import Toast from './atoms/Toast';
 
 export { DEFAULT_SLOTS, initGame };
 
 const AI_TURN_DELAY_MS = 1100;
 const FLASH_CARD_MS = 350;
 const LOG_LIMIT = 14;
+const TOAST_MS = 2500;
 
 export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, onPublishGame, isHost = true } = {}) {
   const synced = !!onPublishGame;
@@ -41,12 +43,20 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
   const [log, setLog] = useState(['✦ Game started!']);
   const [flashCard, setFlashCard] = useState(null);
   const [muteState, setMuteState] = useState(false);
+  const [toast, setToast] = useState(null);
 
   const snd = useSound();
   const mob = useIsMobile();
 
   const gameRef = useRef(game);
   gameRef.current = game;
+  const toastTimerRef = useRef(null);
+
+  const showToast = (msg) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast({ msg, id: Date.now() });
+    toastTimerRef.current = setTimeout(() => setToast(null), TOAST_MS);
+  };
 
   useEffect(() => {
     if (game.gameOver && phase !== 'over') setPhase('over');
@@ -64,18 +74,25 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
     setMuteState(snd.mutedRef.current);
   };
 
-  const canPick = (col) => {
-    if (!isMyTurn || mode !== 'gems') return false;
+  const pickReason = (col) => {
+    if (!isMyTurn) return cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`;
+    if (mode !== 'gems') return 'Tap "Take gems" to start picking';
     const tot = Object.values(picked).reduce((a, b) => a + b, 0);
     const c = picked[col] || 0;
     const bk = game.bank[col];
-    if (bk <= c || tot >= 3) return false;
-    if (Object.values(picked).some((v) => v >= 2)) return false;
+    if (bk - c <= 0) return `No ${GNAME[col]} left in the bank`;
+    if (tot >= 3) return 'Max 3 gems per turn — confirm to take them';
+    if (Object.values(picked).some((v) => v >= 2)) return 'You already took 2 of one color — confirm to finish';
     if (c === 1) {
-      if (Object.keys(picked).some((x) => x !== col && (picked[x] || 0) > 0) || bk < 4) return false;
+      if (Object.keys(picked).some((x) => x !== col && (picked[x] || 0) > 0)) {
+        return `Can't combine 2× ${GNAME[col]} with other colors`;
+      }
+      if (bk < 4) return `Need 4+ in the bank to take 2× ${GNAME[col]}`;
     }
-    return true;
+    return null;
   };
+
+  const canPick = (col) => pickReason(col) === null;
 
   const endTurn = (g) => {
     let ng = doNobles(g, g.turn);
@@ -157,8 +174,21 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
   }, [isAITurn, game.turn]);
 
   const pickGem = (col) => {
+    const reason = pickReason(col);
+    if (reason) {
+      showToast(reason);
+      return;
+    }
     snd.gemPick(col);
     setPicked((prev) => ({ ...prev, [col]: (prev[col] || 0) + 1 }));
+  };
+
+  const pickGoldAttempt = () => {
+    if (!isMyTurn) {
+      showToast(cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`);
+      return;
+    }
+    showToast('Gold is earned by reserving a card');
   };
 
   const confirmGems = () => {
@@ -287,6 +317,8 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
     >
       <GemOrbs />
 
+      <Toast key={toast?.id} message={toast?.msg} />
+
       <Header
         game={game}
         phase={phase}
@@ -323,7 +355,15 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
           onReserveFromDeck={(tier) => reserveCard(null, true, tier)}
         />
 
-        <Bank game={game} mob={mob} mode={mode} picked={picked} canPick={canPick} onPickGem={pickGem} />
+        <Bank
+          game={game}
+          mob={mob}
+          mode={mode}
+          picked={picked}
+          canPick={canPick}
+          onPickGem={pickGem}
+          onPickGold={pickGoldAttempt}
+        />
 
         <GameLog log={log} />
       </div>

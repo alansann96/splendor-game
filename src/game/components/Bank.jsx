@@ -1,7 +1,10 @@
 import { GC, GEMS, GNAME } from '../constants';
 import Gem from './atoms/Gem';
 
-export default function Bank({ game, mob, mode, picked, canPick, onPickGem }) {
+export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPickGold }) {
+  const gemSize = mob ? 42 : 50;
+  const gap = mob ? 6 : 12;
+
   return (
     <div
       style={{
@@ -28,7 +31,17 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem }) {
       >
         {mode === 'gems' ? 'Tap gems · up to 3 different, or 2 same (need 4+)' : 'Gem Bank'}
       </div>
-      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap,
+          alignItems: 'flex-end',
+          flexWrap: 'nowrap',
+          justifyContent: 'space-between',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+        }}
+      >
         {GEMS.map((col) => {
           const canP = canPick(col);
           const p = picked[col] || 0;
@@ -36,31 +49,32 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem }) {
           return (
             <div
               key={col}
-              onClick={canP ? () => onPickGem(col) : undefined}
+              onClick={() => onPickGem(col)}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 6,
-                cursor: canP ? 'pointer' : 'default',
+                gap: 5,
+                cursor: 'pointer',
                 opacity: avail <= 0 && !p ? 0.18 : 1,
                 transition: 'opacity 0.2s, transform var(--dur-fast)',
-                padding: 4,
+                padding: 2,
                 borderRadius: 'var(--r-sm)',
+                flexShrink: 0,
               }}
-              onMouseDown={(e) => canP && (e.currentTarget.style.transform = 'scale(0.93)')}
+              onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.93)')}
               onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              onTouchStart={(e) => canP && (e.currentTarget.style.transform = 'scale(0.93)')}
+              onTouchStart={(e) => (e.currentTarget.style.transform = 'scale(0.93)')}
               onTouchEnd={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             >
-              <Gem col={col} size={50} count={p || null} picked={p > 0} glow={canP || p > 0} dimmed={!canP && !p && mode === 'gems'} />
+              <Gem col={col} size={gemSize} count={p || null} picked={p > 0} glow={canP || p > 0} dimmed={!canP && !p && mode === 'gems'} />
               <div style={{ textAlign: 'center' }}>
                 <div
                   style={{
                     color: GC[col],
                     fontFamily: 'var(--font-display)',
-                    fontSize: 15,
+                    fontSize: mob ? 13 : 15,
                     fontWeight: 700,
                     lineHeight: 1,
                   }}
@@ -83,17 +97,26 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem }) {
           );
         })}
         <div
+          onClick={onPickGold}
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 6,
+            gap: 5,
             opacity: game.bank.gold ? 1 : 0.18,
-            padding: 4,
+            padding: 2,
+            cursor: 'pointer',
+            flexShrink: 0,
+            transition: 'transform var(--dur-fast)',
           }}
+          onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.93)')}
+          onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+          onTouchStart={(e) => (e.currentTarget.style.transform = 'scale(0.93)')}
+          onTouchEnd={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          <div style={{ position: 'relative', width: 50, height: 50 }}>
-            <Gem col="gold" size={50} />
+          <div style={{ position: 'relative', width: gemSize, height: gemSize }}>
+            <Gem col="gold" size={gemSize} />
             <span
               style={{
                 position: 'absolute',
@@ -101,7 +124,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 18,
+                fontSize: mob ? 15 : 18,
                 fontWeight: 900,
                 color: '#fff',
                 textShadow: '0 1px 4px rgba(0,0,0,0.9)',
@@ -116,7 +139,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem }) {
               style={{
                 color: GC.gold,
                 fontFamily: 'var(--font-display)',
-                fontSize: 15,
+                fontSize: mob ? 13 : 15,
                 fontWeight: 700,
                 lineHeight: 1,
               }}
