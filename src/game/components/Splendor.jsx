@@ -6,6 +6,7 @@ import { doBuy, doNobles, doReserve, doTake } from '../engine/actions';
 import { canAfford, goldNeed, totalTok } from '../engine/helpers';
 import { DEFAULT_SLOTS, initGame } from '../engine/init';
 import { useIsMobile } from '../hooks/useIsMobile';
+import { useMusic } from '../hooks/useMusic';
 import { useSound } from '../hooks/useSound';
 import ActionBar from './ActionBar';
 import Bank from './Bank';
@@ -46,6 +47,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
   const [toast, setToast] = useState(null);
 
   const snd = useSound();
+  const { musicMuted, toggleMusic } = useMusic();
   const mob = useIsMobile();
 
   const gameRef = useRef(game);
@@ -325,6 +327,8 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
         mob={mob}
         muteState={muteState}
         onToggleMute={toggleMute}
+        musicMuted={musicMuted}
+        onToggleMusic={toggleMusic}
         onRestart={restart}
       />
 
