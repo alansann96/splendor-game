@@ -32,6 +32,7 @@ export default function CardTile({ card, onClick, canBuy, mode, small, flash }) 
 
   return (
     <div
+      data-tap
       onClick={onClick}
       style={{
         width: w,
@@ -41,6 +42,7 @@ export default function CardTile({ card, onClick, canBuy, mode, small, flash }) 
         position: 'relative',
         overflow: 'hidden',
         flexShrink: 0,
+        touchAction: 'manipulation',
         background: `linear-gradient(165deg, ${GB[card.b]}cc 0%, rgba(8,4,18,0.92) 100%)`,
         border: `${borderWidth}px solid ${borderColor}`,
         backdropFilter: 'var(--blur-sm)',

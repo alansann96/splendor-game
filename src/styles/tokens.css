@@ -77,6 +77,13 @@ body {
 
 button, input { font: inherit; }
 
+button,
+[role="button"],
+[data-tap] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Utility: glass surface */
 .glass {
   background: var(--glass-bg);

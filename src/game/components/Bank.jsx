@@ -51,6 +51,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPi
           return (
             <div
               key={col}
+              data-tap
               onClick={() => onPickGem(col)}
               style={{
                 display: 'flex',
@@ -63,6 +64,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPi
                 padding: 2,
                 borderRadius: 'var(--r-sm)',
                 flexShrink: 0,
+                touchAction: 'manipulation',
               }}
               onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.93)')}
               onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
@@ -99,6 +101,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPi
           );
         })}
         <div
+          data-tap
           onClick={onPickGold}
           style={{
             display: 'flex',
@@ -110,6 +113,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPi
             cursor: 'pointer',
             flexShrink: 0,
             transition: 'transform var(--dur-fast)',
+            touchAction: 'manipulation',
           }}
           onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.93)')}
           onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
