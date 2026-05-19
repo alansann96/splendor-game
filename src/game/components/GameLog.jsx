@@ -8,11 +8,9 @@ export default function GameLog({ log }) {
     <div
       style={{
         padding: '8px 12px',
-        background: 'var(--glass-bg)',
+        background: 'rgba(11,9,24,0.6)',
         borderRadius: 'var(--r-md)',
         border: '1px solid var(--glass-border)',
-        backdropFilter: 'var(--blur-sm)',
-        WebkitBackdropFilter: 'var(--blur-sm)',
       }}
     >
       <div

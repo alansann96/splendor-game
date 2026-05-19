@@ -15,7 +15,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPi
         backdropFilter: 'var(--blur-md)',
         WebkitBackdropFilter: 'var(--blur-md)',
         boxShadow: mode === 'gems' ? '0 0 24px rgba(106,180,248,0.12), var(--glass-highlight)' : 'var(--glass-highlight)',
-        transition: 'all var(--dur-base)',
+        transition: 'border-color var(--dur-base), box-shadow var(--dur-base)',
       }}
     >
       <div

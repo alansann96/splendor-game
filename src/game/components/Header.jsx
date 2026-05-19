@@ -16,6 +16,7 @@ export default function Header({ game, phase, mob, muteState, onToggleMute, onRe
         position: 'sticky',
         top: 0,
         zIndex: 10,
+        willChange: 'transform',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: mob ? 6 : 10, flexShrink: 0 }}>
@@ -68,7 +69,7 @@ export default function Header({ game, phase, mob, muteState, onToggleMute, onRe
                 borderRadius: 99,
                 background: active ? 'rgba(240,200,64,0.10)' : 'transparent',
                 border: `1px solid ${active ? 'rgba(240,200,64,0.45)' : 'transparent'}`,
-                transition: 'all var(--dur-slow) var(--ease-out)',
+                transition: 'background var(--dur-slow), border-color var(--dur-slow)',
                 flexShrink: 0,
               }}
             >

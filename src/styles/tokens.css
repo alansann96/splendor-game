@@ -97,11 +97,18 @@ button,
 .gem-orb {
   position: fixed;
   border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.22;
+  filter: blur(60px);
+  opacity: 0.2;
   pointer-events: none;
   z-index: -1;
   will-change: transform;
+  contain: layout style paint;
+}
+
+/* Touch devices: drop the orbs entirely. They are decorative and on
+   mobile GPUs the continuous filter+blur costs frames. */
+@media (hover: none) and (pointer: coarse) {
+  .gem-orb { display: none; }
 }
 
 @keyframes orb-drift-a {

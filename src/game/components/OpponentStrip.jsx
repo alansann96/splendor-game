@@ -29,12 +29,10 @@ export default function OpponentStrip({ players, activeTurn, myPlayerIndex }) {
               maxWidth: 220,
               padding: '8px 10px',
               borderRadius: 'var(--r-md)',
-              background: active ? 'rgba(19,16,42,0.7)' : 'var(--glass-bg)',
+              background: active ? '#13102a' : '#0b0918',
               border: `1px solid ${active ? 'rgba(240,200,64,0.4)' : 'var(--glass-border)'}`,
-              backdropFilter: 'var(--blur-sm)',
-              WebkitBackdropFilter: 'var(--blur-sm)',
               boxShadow: active ? '0 0 18px rgba(240,200,64,0.10)' : 'var(--glass-highlight)',
-              transition: 'all var(--dur-slow) var(--ease-out)',
+              transition: 'background var(--dur-slow), border-color var(--dur-slow), box-shadow var(--dur-slow)',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>

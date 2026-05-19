@@ -139,9 +139,7 @@ export default function Lobby({ onStartSolo, onCreate, onJoin }) {
                       padding: '10px',
                       borderRadius: 'var(--r-md)',
                       border: `1px solid ${active ? '#52cf7a' : 'var(--glass-border)'}`,
-                      background: active ? 'rgba(82,207,122,0.12)' : 'var(--glass-bg)',
-                      backdropFilter: 'var(--blur-sm)',
-                      WebkitBackdropFilter: 'var(--blur-sm)',
+                      background: active ? 'rgba(82,207,122,0.12)' : '#0b0918',
                       color: active ? '#52cf7a' : 'var(--text-secondary)',
                       fontFamily: 'var(--font-display)',
                       fontSize: 14,
@@ -204,10 +202,8 @@ export default function Lobby({ onStartSolo, onCreate, onJoin }) {
                 width: '100%',
                 padding: '14px',
                 borderRadius: 'var(--r-md)',
-                background: 'var(--glass-bg-tint)',
+                background: '#0b0918',
                 border: '1px solid var(--glass-border)',
-                backdropFilter: 'var(--blur-sm)',
-                WebkitBackdropFilter: 'var(--blur-sm)',
                 color: '#c858e0',
                 fontFamily: 'var(--font-display)',
                 fontWeight: 900,
@@ -254,7 +250,7 @@ function ModeCard({ mode, expanded, onToggle, enabled, disabledHint, children })
           : 'var(--glass-highlight)',
         overflow: 'hidden',
         opacity: enabled ? 1 : 0.5,
-        transition: 'all var(--dur-base) var(--ease-out)',
+        transition: 'border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out)',
       }}
     >
       <button

@@ -23,9 +23,7 @@ export const slotRowStyle = {
   alignItems: 'center',
   gap: 10,
   padding: '10px 14px',
-  background: 'var(--glass-bg)',
+  background: '#0b0918',
   border: '1px solid var(--glass-border)',
   borderRadius: 'var(--r-md)',
-  backdropFilter: 'var(--blur-sm)',
-  WebkitBackdropFilter: 'var(--blur-sm)',
 };

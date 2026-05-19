@@ -7,10 +7,8 @@ export default function NobleTile({ noble }) {
       style={{
         padding: '8px 10px',
         borderRadius: 'var(--r-md)',
-        background: 'linear-gradient(150deg, rgba(34,24,8,0.7), rgba(20,14,4,0.85))',
+        background: 'linear-gradient(150deg, #221808, #140e04)',
         border: '1px solid rgba(240,200,64,0.35)',
-        backdropFilter: 'var(--blur-sm)',
-        WebkitBackdropFilter: 'var(--blur-sm)',
         minWidth: 88,
         position: 'relative',
         overflow: 'hidden',

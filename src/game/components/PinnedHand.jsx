@@ -20,6 +20,7 @@ export default function PinnedHand({ player, isActive, myTurn, mode, flashCard, 
         flexDirection: 'column',
         gap: 6,
         boxShadow: isActive ? '0 -8px 28px rgba(240,200,64,0.08)' : 'none',
+        willChange: 'transform',
       }}
     >
       {/* Header row: name + points */}

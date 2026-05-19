@@ -43,10 +43,8 @@ export default function CardTile({ card, onClick, canBuy, mode, small, flash }) 
         overflow: 'hidden',
         flexShrink: 0,
         touchAction: 'manipulation',
-        background: `linear-gradient(165deg, ${GB[card.b]}cc 0%, rgba(8,4,18,0.92) 100%)`,
+        background: `linear-gradient(165deg, ${GB[card.b]}f0 0%, #050310 100%)`,
         border: `${borderWidth}px solid ${borderColor}`,
-        backdropFilter: 'var(--blur-sm)',
-        WebkitBackdropFilter: 'var(--blur-sm)',
         boxShadow:
           canBuy && !mode
             ? `0 0 18px ${tint}55, var(--glass-highlight)`

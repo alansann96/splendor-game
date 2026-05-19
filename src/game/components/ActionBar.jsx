@@ -34,6 +34,7 @@ export default function ActionBar({
     padding: '12px 14px calc(12px + env(safe-area-inset-bottom))',
     zIndex: 8,
     boxShadow: '0 -12px 36px rgba(0,0,0,0.4)',
+    willChange: 'transform',
   };
 
   // Discard phase has its own dedicated UI
@@ -235,7 +236,8 @@ function PrimaryActionBtn({ label, sublabel, col, onClick, icon, disabled }) {
         justifyContent: 'center',
         gap: 8,
         minHeight: 48,
-        transition: 'all var(--dur-base) var(--ease-std)',
+        transition: 'transform var(--dur-fast) var(--ease-std), box-shadow var(--dur-base), background var(--dur-base)',
+        touchAction: 'manipulation',
       }}
       onTouchStart={(e) => !disabled && (e.currentTarget.style.transform = 'scale(0.97)')}
       onTouchEnd={(e) => (e.currentTarget.style.transform = 'scale(1)')}

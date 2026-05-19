@@ -69,17 +69,15 @@ export default function Board({ game, mob, mode, isMyTurn, me, flashCard, onCard
                 borderRadius: 'var(--r-md)',
                 flexShrink: 0,
                 cursor: canTakeDeck ? 'pointer' : 'default',
-                background: `linear-gradient(160deg, ${tierColor}1f, rgba(6,4,14,0.95))`,
+                background: `linear-gradient(160deg, ${tierColor}1f, #06040e)`,
                 border: `1px solid ${canTakeDeck ? tierColor + 'cc' : tierColor + '40'}`,
-                backdropFilter: 'var(--blur-sm)',
-                WebkitBackdropFilter: 'var(--blur-sm)',
                 boxShadow: canTakeDeck ? `0 0 16px ${tierColor}55` : 'var(--glass-highlight)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 4,
-                transition: 'all var(--dur-base)',
+                transition: 'border-color var(--dur-base), box-shadow var(--dur-base)',
               }}
             >
               <span
