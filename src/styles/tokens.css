@@ -1,0 +1,131 @@
+:root {
+  /* Base surfaces */
+  --bg-deep: #06040e;
+  --bg-base: #0b0918;
+  --bg-elevated: #13102a;
+
+  /* Glass tokens */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-strong: rgba(255, 255, 255, 0.09);
+  --glass-bg-tint: rgba(20, 12, 40, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-lit: rgba(255, 255, 255, 0.22);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --blur-sm: blur(8px);
+  --blur-md: blur(14px);
+  --blur-lg: blur(22px);
+
+  /* Semantic action / gem colors */
+  --accent-gold: #f0c840;
+  --accent-sapphire: #6ab4f8;
+  --accent-violet: #8a6fd0;
+  --accent-emerald: #52cf7a;
+  --accent-ruby: #f06060;
+
+  --text-primary: #ece2ff;
+  --text-secondary: rgba(236, 226, 255, 0.66);
+  --text-tertiary: rgba(236, 226, 255, 0.45);
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+
+  /* Spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 48px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 280ms;
+
+  /* Font stacks */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100dvh;
+  position: relative;
+  isolation: isolate;
+}
+
+* { box-sizing: border-box; }
+
+button, input { font: inherit; }
+
+/* Utility: glass surface */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+}
+
+/* Drifting gem orbs (the ambient backdrop) */
+.gem-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform;
+}
+
+@keyframes orb-drift-a {
+  0%   { transform: translate3d(-10vw, -10vh, 0) scale(1); }
+  50%  { transform: translate3d(20vw, 30vh, 0) scale(1.15); }
+  100% { transform: translate3d(-10vw, -10vh, 0) scale(1); }
+}
+@keyframes orb-drift-b {
+  0%   { transform: translate3d(50vw, 70vh, 0) scale(1.1); }
+  50%  { transform: translate3d(80vw, 20vh, 0) scale(0.9); }
+  100% { transform: translate3d(50vw, 70vh, 0) scale(1.1); }
+}
+@keyframes orb-drift-c {
+  0%   { transform: translate3d(70vw, -10vh, 0) scale(1); }
+  50%  { transform: translate3d(10vw, 50vh, 0) scale(1.2); }
+  100% { transform: translate3d(70vw, -10vh, 0) scale(1); }
+}
+
+/* Common keyframes used across the app */
+@keyframes sh   { 0%,100% { opacity: 0.55 } 50% { opacity: 1 } }
+@keyframes pu   { 0%,100% { opacity: 0.35 } 50% { opacity: 1 } }
+@keyframes pi   { 0% { transform: scale(0.85); opacity: 0 } 60% { transform: scale(1.06) } 100% { transform: scale(1); opacity: 1 } }
+@keyframes gp   { 0%,100% { opacity: 0.8; transform: scale(1) } 50% { opacity: 1; transform: scale(1.05) } }
+@keyframes shimmer { 0%,100% { opacity: 0.45 } 50% { opacity: 1 } }
+
+/* Reduced motion: kill orb drift + pulses */
+@media (prefers-reduced-motion: reduce) {
+  .gem-orb { animation: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
