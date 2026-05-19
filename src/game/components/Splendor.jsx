@@ -5,9 +5,8 @@ import { GEMS, GNAME, MAX_RESERVED, MAX_TOKENS, WIN_POINTS } from '../constants'
 import { doBuy, doNobles, doReserve, doTake } from '../engine/actions';
 import { canAfford, goldNeed, totalTok } from '../engine/helpers';
 import { DEFAULT_SLOTS, initGame } from '../engine/init';
+import { useAudio } from '../../audio/AudioProvider';
 import { useIsMobile } from '../hooks/useIsMobile';
-import { useMusic } from '../hooks/useMusic';
-import { useSound } from '../hooks/useSound';
 import ActionBar from './ActionBar';
 import Bank from './Bank';
 import Board from './Board';
@@ -43,11 +42,9 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
   const [discQ, setDiscQ] = useState({});
   const [log, setLog] = useState(['✦ Game started!']);
   const [flashCard, setFlashCard] = useState(null);
-  const [muteState, setMuteState] = useState(false);
   const [toast, setToast] = useState(null);
 
-  const snd = useSound();
-  const { musicMuted, toggleMusic } = useMusic();
+  const { snd, musicMuted, toggleMusic, sndMuted, toggleSnd } = useAudio();
   const mob = useIsMobile();
 
   const gameRef = useRef(game);
@@ -70,11 +67,6 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
   const isAITurn = phase === 'acting' && cur && cur.kind === 'ai';
 
   const addLog = (msg) => setLog((p) => [msg, ...p.slice(0, LOG_LIMIT)]);
-
-  const toggleMute = () => {
-    snd.mutedRef.current = !snd.mutedRef.current;
-    setMuteState(snd.mutedRef.current);
-  };
 
   const pickReason = (col) => {
     if (!isMyTurn) return cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`;
@@ -325,8 +317,8 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
         game={game}
         phase={phase}
         mob={mob}
-        muteState={muteState}
-        onToggleMute={toggleMute}
+        muteState={sndMuted}
+        onToggleMute={toggleSnd}
         musicMuted={musicMuted}
         onToggleMusic={toggleMusic}
         onRestart={restart}

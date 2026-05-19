@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { AudioProvider } from './audio/AudioProvider';
+import FloatingAudioToggles from './audio/FloatingAudioToggles';
 import Splendor from './game/components/Splendor';
 import Lobby from './lobby/Lobby';
 import OnlineGame from './lobby/OnlineGame';
@@ -7,6 +9,14 @@ import WaitingRoom from './lobby/WaitingRoom';
 import { fetchRoom, getClientId, newCode, publishRoom, publishSlots } from './useRoom';
 
 export default function App() {
+  return (
+    <AudioProvider>
+      <AppViews />
+    </AudioProvider>
+  );
+}
+
+function AppViews() {
   const [view, setView] = useState('lobby');
   const [slots, setSlots] = useState(null);
   const [myIdx, setMyIdx] = useState(0);
@@ -80,13 +90,16 @@ export default function App() {
 
   if (view === 'waiting') {
     return (
-      <WaitingRoom
-        code={roomCode}
-        myIdx={myIdx}
-        isHost={isHost}
-        onStart={() => setView('game')}
-        onLeave={backToLobby}
-      />
+      <>
+        <WaitingRoom
+          code={roomCode}
+          myIdx={myIdx}
+          isHost={isHost}
+          onStart={() => setView('game')}
+          onLeave={backToLobby}
+        />
+        <FloatingAudioToggles />
+      </>
     );
   }
 
@@ -94,5 +107,10 @@ export default function App() {
     return <OnlineGame code={roomCode} myIdx={myIdx} isHost={isHost} onLeave={backToLobby} />;
   }
 
-  return <Lobby onStartSolo={startSolo} onCreate={handleCreate} onJoin={handleJoin} />;
+  return (
+    <>
+      <Lobby onStartSolo={startSolo} onCreate={handleCreate} onJoin={handleJoin} />
+      <FloatingAudioToggles />
+    </>
+  );
 }
