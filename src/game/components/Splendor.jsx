@@ -24,7 +24,7 @@ const FLASH_CARD_MS = 350;
 const LOG_LIMIT = 14;
 const TOAST_MS = 2500;
 
-export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, onPublishGame, isHost = true } = {}) {
+export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, onPublishGame, isHost = true, onOpenHelp } = {}) {
   const synced = !!onPublishGame;
   const [slots] = useState(initialSlots && initialSlots.length ? initialSlots : DEFAULT_SLOTS);
   const [gameLocal, setGameLocal] = useState(() => syncedGame || initGame(slots));
@@ -70,12 +70,12 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
 
   const pickReason = (col) => {
     if (!isMyTurn) return cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`;
-    if (mode !== 'gems') return 'Tap "Take gems" to start picking';
+    if (mode !== 'gems') return 'Tap "Take Essences" to start picking';
     const tot = Object.values(picked).reduce((a, b) => a + b, 0);
     const c = picked[col] || 0;
     const bk = game.bank[col];
     if (bk - c <= 0) return `No ${GNAME[col]} left in the bank`;
-    if (tot >= 3) return 'Max 3 gems per turn — confirm to take them';
+    if (tot >= 3) return 'Max 3 essences per turn — confirm to take them';
     if (Object.values(picked).some((v) => v >= 2)) return 'You already took 2 of one color — confirm to finish';
     if (c === 1) {
       if (Object.keys(picked).some((x) => x !== col && (picked[x] || 0) > 0)) {
@@ -92,7 +92,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
     let ng = doNobles(g, g.turn);
     if (ng.nobles.length < g.nobles.length) {
       snd.noble();
-      addLog(`✦ ${ng.players[g.turn].name} earned a noble!`);
+      addLog(`✦ ${ng.players[g.turn].name} earned an archmage!`);
     }
     const justActed = ng.players[g.turn];
     if (justActed.points >= WIN_POINTS && !ng.finalRound) {
@@ -130,7 +130,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
       snd.aiMove();
       if (act.type === 'buy') {
         ng = doBuy(g, pi, act.card, act.fromRes);
-        addLog(`🤖 ${aiName} bought ${GNAME[act.card.b]} card (+${act.card.p}pts)`);
+        addLog(`🤖 ${aiName} bought ${GNAME[act.card.b]} reagent (+${act.card.p}pts)`);
       } else if (act.type === 'take') {
         ng = doTake(g, pi, act.gems);
         addLog(`🤖 ${aiName} took: ${Object.entries(act.gems).map(([c, n]) => `${n}×${GNAME[c]}`).join(', ')}`);
@@ -150,7 +150,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
         }
       } else if (act.type === 'reserve') {
         ng = doReserve(g, pi, act.card, false, null);
-        addLog(`🤖 ${aiName} reserved a card`);
+        addLog(`🤖 ${aiName} reserved a reagent`);
         if (totalTok(ng.players[pi]) > MAX_TOKENS) {
           const tok = { ...ng.players[pi].tokens };
           const bank = { ...ng.bank };
@@ -182,7 +182,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
       showToast(cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`);
       return;
     }
-    showToast('Gold is earned by reserving a card');
+    showToast('Aurum is earned by reserving a reagent');
   };
 
   const confirmGems = () => {
@@ -214,7 +214,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
       setFlashCard(card.id);
       setTimeout(() => setFlashCard(null), FLASH_CARD_MS);
       const ng = doBuy(game, myPlayerIndex, card, fromRes);
-      addLog(`✦ ${me.name} bought ${GNAME[card.b]} card (+${card.p}pts)${fromRes ? ' [reserved]' : ''}`);
+      addLog(`✦ ${me.name} bought ${GNAME[card.b]} reagent (+${card.p}pts)${fromRes ? ' [reserved]' : ''}`);
       endTurn(ng);
     } else {
       addLog(`✗ Need ${goldNeed(me, card)} more gold`);
@@ -224,14 +224,14 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
   const reserveCard = (card, fromDeck, tier) => {
     if (!isMyTurn) return;
     if (me.reserved.length >= MAX_RESERVED) {
-      addLog(`✗ Max ${MAX_RESERVED} reserved cards`);
+      addLog(`✗ Max ${MAX_RESERVED} reserved reagents`);
       return;
     }
     snd.reserve();
     const ng = doReserve(game, myPlayerIndex, card, fromDeck, tier);
     addLog(
-      `✦ ${me.name} reserved ${fromDeck ? `tier-${tier} card` : GNAME[card.b] + ' card'}${
-        ng.bank.gold !== game.bank.gold ? ' (+gold)' : ''
+      `✦ ${me.name} reserved ${fromDeck ? `tier-${tier} reagent` : GNAME[card.b] + ' reagent'}${
+        ng.bank.gold !== game.bank.gold ? ' (+aurum)' : ''
       }`,
     );
     setMode(null);
@@ -322,6 +322,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
         musicMuted={musicMuted}
         onToggleMusic={toggleMusic}
         onRestart={restart}
+        onOpenHelp={onOpenHelp}
       />
 
       {/* Scrollable body */}

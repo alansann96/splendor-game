@@ -29,7 +29,7 @@ export default function Bank({ game, mob, mode, picked, canPick, onPickGem, onPi
           textTransform: 'uppercase',
         }}
       >
-        {mode === 'gems' ? 'Tap gems · up to 3 different, or 2 same (need 4+)' : 'Gem Bank'}
+        {mode === 'gems' ? 'Tap essences · up to 3 different, or 2 same (need 4+)' : 'Essence Bank'}
       </div>
       <div
         style={{

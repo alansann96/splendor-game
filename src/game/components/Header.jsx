@@ -1,4 +1,4 @@
-export default function Header({ game, phase, mob, muteState, onToggleMute, musicMuted, onToggleMusic, onRestart }) {
+export default function Header({ game, phase, mob, muteState, onToggleMute, musicMuted, onToggleMusic, onRestart, onOpenHelp }) {
   return (
     <div
       style={{
@@ -33,10 +33,10 @@ export default function Header({ game, phase, mob, muteState, onToggleMute, musi
                 lineHeight: 1,
               }}
             >
-              SPLENDOR
+              ARCANE ESSENCES
             </div>
             <div style={{ color: 'rgba(240,200,64,0.45)', fontSize: 8, letterSpacing: 3, fontWeight: 500, marginTop: 2 }}>
-              RENAISSANCE
+              A GAME OF PRESTIGE
             </div>
           </div>
         )}
@@ -134,6 +134,29 @@ export default function Header({ game, phase, mob, muteState, onToggleMute, musi
       </div>
 
       <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0 }}>
+        {onOpenHelp && (
+          <button
+            onClick={onOpenHelp}
+            aria-label="How to play"
+            title="How to play"
+            style={{
+              border: '1px solid rgba(240,200,64,0.35)',
+              background: 'rgba(240,200,64,0.08)',
+              color: 'var(--accent-gold)',
+              fontSize: mob ? 13 : 15,
+              fontFamily: 'var(--font-display)',
+              fontWeight: 900,
+              cursor: 'pointer',
+              borderRadius: 'var(--r-sm)',
+              padding: mob ? '5px 8px' : '6px 10px',
+              minWidth: 32,
+              minHeight: 32,
+              lineHeight: 1,
+            }}
+          >
+            ?
+          </button>
+        )}
         <button
           onClick={onToggleMusic}
           aria-label={musicMuted ? 'Play music' : 'Pause music'}

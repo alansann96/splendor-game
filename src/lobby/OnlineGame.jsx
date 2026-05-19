@@ -25,7 +25,7 @@ function normalizeGame(g) {
   };
 }
 
-export default function OnlineGame({ code, myIdx, isHost, onLeave }) {
+export default function OnlineGame({ code, myIdx, isHost, onLeave, onOpenHelp }) {
   const { room, error } = useRoom(code);
 
   if (error) return <CenterMessage title="Connection lost" body={error} actionLabel="BACK TO LOBBY" onAction={onLeave} />;
@@ -48,6 +48,7 @@ export default function OnlineGame({ code, myIdx, isHost, onLeave }) {
         isHost={isHost}
         myPlayerIndex={myIdx}
         initialSlots={cleanSlots}
+        onOpenHelp={onOpenHelp}
       />
       <OnlineHeaderChips code={code} onLeave={onLeave} />
     </div>

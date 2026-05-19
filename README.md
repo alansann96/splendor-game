@@ -1,6 +1,8 @@
-# Splendor — online with friends
+# Arcane Essences — online with friends
 
-React + Vite implementation of the Splendor board game. Solo vs AI (easy/medium/hard) or online with 2–4 players using Firebase Realtime Database for state sync.
+React + Vite implementation of an arcane-themed essence-trading engine-builder. Solo vs AI (easy/medium/hard) or online with 2–4 players using Firebase Realtime Database for state sync.
+
+> Inspired by the gem-trading engine-builder genre. Not affiliated with, endorsed by, or derived from any commercial product.
 
 ## Run locally
 
@@ -103,10 +105,10 @@ src/main.jsx           # React entrypoint
 
 ## Game features
 
-- 2–4 players (Splendor rules: 4/5/7 tokens per color for 2/3/4 players, N+1 nobles)
+- 2–4 players (4/5/7 essences per color for 2/3/4 players, N+1 archmages)
 - Solo vs AI with three difficulty levels:
   - **Easy** — random valid moves
   - **Medium** — heuristic (target a card, gather its gems, buy)
   - **Hard** — enumerates candidate moves, evaluates 1-ply ahead
 - AI bots can fill empty slots in online rooms too
-- 15-point win, final-round trigger, noble tiles, gold (wild) tokens on reserve
+- 15-point win, final-round trigger, archmage tiles, aurum (wild) tokens on reserve

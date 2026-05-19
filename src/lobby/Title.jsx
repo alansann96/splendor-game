@@ -1,5 +1,5 @@
 export default function Title({ size = 'lg' }) {
-  const titleFs = size === 'sm' ? 28 : 48;
+  const titleFs = size === 'sm' ? 20 : 34;
   const subFs = size === 'sm' ? 8 : 10;
   const sparkFs = size === 'sm' ? 32 : 56;
   return (
@@ -21,11 +21,11 @@ export default function Title({ size = 'lg' }) {
           fontWeight: 900,
           color: 'var(--accent-gold)',
           fontSize: titleFs,
-          letterSpacing: size === 'sm' ? 4 : 8,
+          letterSpacing: size === 'sm' ? 2 : 4,
           lineHeight: 1,
         }}
       >
-        SPLENDOR
+        ARCANE ESSENCES
       </div>
       <div
         style={{
@@ -37,7 +37,7 @@ export default function Title({ size = 'lg' }) {
           fontWeight: 500,
         }}
       >
-        RENAISSANCE
+        A GAME OF PRESTIGE
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ export default function Board({ game, mob, mode, isMyTurn, me, flashCard, onCard
               fontWeight: 700,
             }}
           >
-            NOBLES
+            ARCHMAGES
           </span>
         </div>
         <div style={{ display: 'flex', gap: 8, overflowX: 'auto', scrollbarWidth: 'none', flex: 1 }}>

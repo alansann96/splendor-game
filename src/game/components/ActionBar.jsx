@@ -147,7 +147,7 @@ export default function ActionBar({
               {pickedTotal}
               <span style={{ color: 'var(--text-tertiary)', fontSize: 11, fontWeight: 500 }}>/3</span>
             </span>
-            <span style={{ color: 'var(--text-tertiary)', fontSize: 11 }}>gems selected</span>
+            <span style={{ color: 'var(--text-tertiary)', fontSize: 11 }}>essences selected</span>
             {pickedTotal > 0 && (
               <span
                 onClick={onResetPicked}
@@ -184,7 +184,7 @@ export default function ActionBar({
               flex: 1,
             }}
           >
-            Tap any card or a deck pile to reserve it. You receive a gold (wild) token.
+            Tap any reagent or a deck pile to reserve it. You receive an aurum (wild) token.
           </span>
           <Btn label="CANCEL" col="#9a8ea8" onClick={onCancelReserve} size="md" />
         </div>
@@ -198,7 +198,7 @@ export default function ActionBar({
     return (
       <div style={wrapStyle}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'stretch' }}>
-          <PrimaryActionBtn label="TAKE GEMS" col="#6ab4f8" onClick={onTakeMode} icon="◆" />
+          <PrimaryActionBtn label="TAKE ESSENCES" col="#6ab4f8" onClick={onTakeMode} icon="◆" />
           <PrimaryActionBtn
             label="RESERVE"
             sublabel={`${me.reserved.length}/${MAX_RESERVED}`}

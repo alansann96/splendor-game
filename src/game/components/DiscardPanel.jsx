@@ -17,7 +17,7 @@ export default function DiscardPanel({ me, discQ, overBy, discTotal, onPick, onC
           textTransform: 'uppercase',
         }}
       >
-        ⚠ Discard {remaining} gem{remaining === 1 ? '' : 's'}
+        ⚠ Discard {remaining} essence{remaining === 1 ? '' : 's'}
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
         {[...GEMS, 'gold'].map((c) => {

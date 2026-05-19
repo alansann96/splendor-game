@@ -14,7 +14,7 @@ const MODE_THEME = {
   join:   { color: '#c858e0', icon: '⇲',  label: 'Join room',      hint: 'Enter a 4-letter code from a friend.' },
 };
 
-export default function Lobby({ onStartSolo, onCreate, onJoin }) {
+export default function Lobby({ onStartSolo, onCreate, onJoin, onOpenHelp }) {
   const [expanded, setExpanded] = useState('solo');
   const [humanName, setHumanName] = useState(localStorage.getItem('splendor.name') || 'You');
   const [aiList, setAiList] = useState(['medium']);
@@ -45,6 +45,29 @@ export default function Lobby({ onStartSolo, onCreate, onJoin }) {
         }}
       >
         <Title />
+
+        {onOpenHelp && (
+          <button
+            onClick={onOpenHelp}
+            style={{
+              alignSelf: 'center',
+              marginTop: -8,
+              padding: '6px 16px',
+              background: 'transparent',
+              border: '1px solid rgba(240,200,64,0.35)',
+              borderRadius: 999,
+              color: 'rgba(240,200,64,0.85)',
+              fontFamily: 'var(--font-ui)',
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: 2.5,
+              cursor: 'pointer',
+              transition: 'all var(--dur-base) var(--ease-out)',
+            }}
+          >
+            ✦  HOW TO PLAY
+          </button>
+        )}
 
         <ModeCard
           mode="solo"
