@@ -15,7 +15,7 @@ const STEPS = [
     title: 'Pick Up Essences',
     icon: '◆',
     visual: 'gems',
-    body: 'Essences are colorful gems. On your turn, pick 3 essences in different colors. Or pick 2 of the same color if there are 4 or more left. Don\'t hold more than 10 in total.',
+    body: 'Essences are colorful gems. Just tap any essence directly to start picking — no button needed! Take 3 in different colors, or 2 of the same if 4 or more are left. Tap a picked gem to deselect it, then hit Confirm.',
   },
   {
     eyebrow: 'Your Turn · Step 2',
@@ -29,7 +29,7 @@ const STEPS = [
     title: 'Save One for Later',
     icon: '⊞',
     visual: 'aurum',
-    body: 'See a reagent you want but can\'t buy yet? Save it! You\'ll also get an aurum — a gold coin that can act as any color. You can save up to 3 reagents.',
+    body: 'See a reagent you can\'t buy yet? Tap the ★ wild gem in the bank to enter reserve mode, then tap any reagent card to save it. You\'ll also get an aurum — a gold coin that works as any color. Up to 3 saves allowed.',
   },
   {
     eyebrow: 'Special Bonus',
