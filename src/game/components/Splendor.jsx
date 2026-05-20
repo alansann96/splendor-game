@@ -70,7 +70,6 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
 
   const pickReason = (col) => {
     if (!isMyTurn) return cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`;
-    if (mode !== 'gems') return 'Tap "Take Essences" to start picking';
     const tot = Object.values(picked).reduce((a, b) => a + b, 0);
     const c = picked[col] || 0;
     const bk = game.bank[col];
@@ -167,14 +166,28 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAITurn, game.turn]);
 
-  const pickGem = (col) => {
-    const reason = pickReason(col);
-    if (reason) {
-      showToast(reason);
+  const handleGemClick = (col) => {
+    if (!isMyTurn) {
+      showToast(cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`);
       return;
     }
-    snd.gemPick(col);
-    setPicked((prev) => ({ ...prev, [col]: (prev[col] || 0) + 1 }));
+    if (mode === 'reserve') return;
+    const reason = pickReason(col);
+    if (!reason) {
+      if (mode !== 'gems') setMode('gems');
+      snd.gemPick(col);
+      setPicked((prev) => ({ ...prev, [col]: (prev[col] || 0) + 1 }));
+    } else if ((picked[col] || 0) > 0) {
+      snd.gemPick(col);
+      setPicked((prev) => {
+        const n = { ...prev };
+        if ((n[col] || 0) <= 1) delete n[col];
+        else n[col]--;
+        return n;
+      });
+    } else {
+      showToast(reason);
+    }
   };
 
   const pickGoldAttempt = () => {
@@ -182,7 +195,9 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
       showToast(cur && cur.kind === 'ai' ? `${cur.name} is taking their turn` : `Wait for ${cur?.name || 'other player'}`);
       return;
     }
-    showToast('Aurum is earned by reserving a reagent');
+    if (mode === 'gems' || mode === 'reserve') return;
+    snd.click();
+    setMode('reserve');
   };
 
   const confirmGems = () => {
@@ -359,7 +374,7 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
           mode={mode}
           picked={picked}
           canPick={canPick}
-          onPickGem={pickGem}
+          onPickGem={handleGemClick}
           onPickGold={pickGoldAttempt}
         />
 
@@ -388,17 +403,8 @@ export default function Splendor({ initialSlots, myPlayerIndex = 0, syncedGame, 
           discQ={discQ}
           overBy={overBy}
           discTotal={discTotal}
-          onTakeMode={() => {
-            snd.click();
-            setMode('gems');
-          }}
-          onReserveMode={() => {
-            snd.click();
-            setMode('reserve');
-          }}
           onConfirmGems={confirmGems}
           onCancelGems={cancelGems}
-          onResetPicked={() => setPicked({})}
           onCancelReserve={() => setMode(null)}
           onPickDiscard={pickDiscard}
           onConfirmDiscard={confirmDiscard}

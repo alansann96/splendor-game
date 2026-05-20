@@ -1,4 +1,3 @@
-import { MAX_RESERVED } from '../constants';
 import Btn from './atoms/Btn';
 import DiscardPanel from './DiscardPanel';
 
@@ -9,16 +8,12 @@ export default function ActionBar({
   isAITurn,
   cur,
   me,
-  picked,
   pickedTotal,
   discQ,
   overBy,
   discTotal,
-  onTakeMode,
-  onReserveMode,
   onConfirmGems,
   onCancelGems,
-  onResetPicked,
   onCancelReserve,
   onPickDiscard,
   onConfirmDiscard,
@@ -148,20 +143,6 @@ export default function ActionBar({
               <span style={{ color: 'var(--text-tertiary)', fontSize: 11, fontWeight: 500 }}>/3</span>
             </span>
             <span style={{ color: 'var(--text-tertiary)', fontSize: 11 }}>essences selected</span>
-            {pickedTotal > 0 && (
-              <span
-                onClick={onResetPicked}
-                style={{
-                  color: 'var(--text-tertiary)',
-                  fontSize: 11,
-                  cursor: 'pointer',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: 3,
-                }}
-              >
-                reset
-              </span>
-            )}
           </div>
           <Btn label="CANCEL" col="#9a8ea8" onClick={onCancelGems} size="md" />
           <Btn label="CONFIRM" col="#52cf7a" onClick={onConfirmGems} disabled={pickedTotal === 0} size="md" />
@@ -192,85 +173,25 @@ export default function ActionBar({
     );
   }
 
-  // My turn — default (no mode)
+  // My turn — default (no mode): subtle hint
   if (isMyTurn) {
-    const reserveFull = me.reserved.length >= MAX_RESERVED;
     return (
       <div style={wrapStyle}>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'stretch' }}>
-          <PrimaryActionBtn label="TAKE ESSENCES" col="#6ab4f8" onClick={onTakeMode} icon="◆" />
-          <PrimaryActionBtn
-            label="RESERVE"
-            sublabel={`${me.reserved.length}/${MAX_RESERVED}`}
-            col="#c858e0"
-            onClick={reserveFull ? undefined : onReserveMode}
-            icon="⊟"
-            disabled={reserveFull}
-          />
-        </div>
+        <span
+          style={{
+            color: 'var(--text-tertiary)',
+            fontSize: 11,
+            fontFamily: 'var(--font-ui)',
+            fontWeight: 500,
+            letterSpacing: 1,
+            padding: '2px 4px',
+          }}
+        >
+          Tap an essence to take · tap ★ to reserve · tap a card to buy
+        </span>
       </div>
     );
   }
 
   return null;
-}
-
-function PrimaryActionBtn({ label, sublabel, col, onClick, icon, disabled }) {
-  return (
-    <button
-      onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-      style={{
-        flex: 1,
-        padding: '12px 14px',
-        borderRadius: 'var(--r-md)',
-        border: `1px solid ${disabled ? 'rgba(255,255,255,0.06)' : col + '99'}`,
-        background: disabled ? 'rgba(255,255,255,0.02)' : `${col}18`,
-        backdropFilter: 'var(--blur-sm)',
-        WebkitBackdropFilter: 'var(--blur-sm)',
-        color: disabled ? 'rgba(255,255,255,0.22)' : col,
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        boxShadow: disabled ? 'none' : `0 0 22px ${col}28, var(--glass-highlight)`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 8,
-        minHeight: 48,
-        transition: 'transform var(--dur-fast) var(--ease-std), box-shadow var(--dur-base), background var(--dur-base)',
-        touchAction: 'manipulation',
-      }}
-      onTouchStart={(e) => !disabled && (e.currentTarget.style.transform = 'scale(0.97)')}
-      onTouchEnd={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-      onMouseDown={(e) => !disabled && (e.currentTarget.style.transform = 'scale(0.97)')}
-      onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-    >
-      <span style={{ fontSize: 16, opacity: 0.9 }}>{icon}</span>
-      <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
-        <span
-          style={{
-            fontFamily: 'var(--font-ui)',
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: 2,
-          }}
-        >
-          {label}
-        </span>
-        {sublabel && (
-          <span
-            style={{
-              fontSize: 9,
-              opacity: 0.65,
-              letterSpacing: 1,
-              marginTop: 2,
-              fontWeight: 500,
-            }}
-          >
-            {sublabel}
-          </span>
-        )}
-      </span>
-    </button>
-  );
 }
